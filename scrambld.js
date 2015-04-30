@@ -1093,8 +1093,6 @@ bh_corners[X][W] = "[D2: [L2, U R2 U']]";
 
 // Inits the canvas
 function initCube() {
-    cube_canvas = document.getElementById('cube_canvas').getContext('2d');
-
     // Full cube is initialized
     for (var i=0; i<54; i++ ){
         full_cube[i] = 0;
@@ -1110,6 +1108,11 @@ function initCube() {
 
     // Corners and edges are initialized in solved position
     resetCube();
+}
+
+// Inits canvas to draw the cube
+function initCubeCanvas(canvas_id){
+    cube_canvas = document.getElementById('cube_canvas').getContext('2d');
 }
 
 // Sets cube to solved position
@@ -1548,5 +1551,3 @@ function edgesSolved (){
 
     return edges_solved;
 }
-
-$( document ).ready(initCube);

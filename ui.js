@@ -38,7 +38,9 @@ function initUI(){
         solveAndDisplay();
     });
 
-    // Renders the cube in its solved state
+    // Inits and renders the cube in its solved state
+    initCube();
+    initCubeCanvas('cube_canvas');
     renderCube();
 }
 
