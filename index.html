@@ -1,0 +1,56 @@
+<html>
+    <head>
+        <title>ScramBLD</title>
+        <script type="text/javascript" src="jquery-1.11.2.min.js"></script>
+        <script type="text/javascript" src="scramble_333.js"></script>
+        <script type="text/javascript" src="cube.js"></script>
+        <script type="text/javascript" src="ui.js"></script>
+        <link rel="stylesheet" type="text/css" href="bld.css">
+    </head>
+    <body>
+        <div id="topbar">
+            <div id="topbar-content">
+                <div id="title">ScramBLD</div>
+                <div id="author">- by Alejandro Di Mare</div>
+            </div>
+        </div>
+        <div id="content">
+            <div id="left-column">
+                <div class="section">
+                    <canvas id="cube_canvas" width="350" height="260">
+                        No support for HTML5 Canvas.
+                    </canvas>
+                </div>
+                <div class="section">
+                    <h2>Edges</h2>
+                    <h3 id="edges-solution"></h3>
+                    <h2>Corners</h2>
+                    <h3 id="corners-solution"></h3>
+                </div>
+            </div>
+            <div id="right-column">
+                <div class="section">
+                    <h2>Scramble</h2>
+                    <input id="scramble" placeholder="Click here to add scramble" value=""/>
+                    <a id="get-scramble" class="btn active-btn pressable">Scramble</a>
+                    <a id="algcubing" class="btn pressable active-btn" href="https://alg.cubing.net" target="_blank">alg.cubing.net</a>
+                </div>
+                <div class="section">
+                    <h2>Edge Pairs</h2>
+                    <h3 id="edges"></h3>
+                    <h2>Corner Pairs</h2>
+                    <h3 id="corners"></h3>
+                </div>
+                <div class="section">
+                    <h2>Solve corners using</h2>
+                    <a id="3style-corners" class="btn active-btn">3-Style</a>
+                    <a id="op-corners" class="btn inactive-btn">Old Pochmann</a>
+
+                    <h2>Solve edges using</h2>
+                    <a id="3style-edges" class="btn active-btn">3-Style</a>
+                    <a id="m2-edges" class="btn inactive-btn">M2</a>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
