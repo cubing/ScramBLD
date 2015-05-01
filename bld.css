@@ -2,7 +2,7 @@ body {margin: 0; background-color: #e9e9e9; font-family: Helvetica Neue, Helveti
 #topbar { width: 100%; height: 50px; background-color: #20a8e9; }
 #topbar-content { width: 900px; margin: auto; color:#FFFFFF; }
 #topbar-content #title { float: left; line-height: 50px; font-size:30px; font-weight: 800;}
-#topbar-content #author { float: right; margin-top: 30px; font-size: 13px;}
+#topbar-content #author { float: right; margin-top: 30px; margin-right: 5px; font-size: 13px;}
 #content { width: 900px; margin: auto; margin-top: 30px;}
 #left-column {float: left; width: 420px;}
 #right-column {float: right; width: 460px; }
