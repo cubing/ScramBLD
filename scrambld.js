@@ -275,7 +275,7 @@ bh_edges[D][X] = "[U M2 U', L2]";
 
 bh_edges[E] = {};
 bh_edges[E][A] = "[x': [U L' U', M2]]";
-bh_edges[E][Q] = "[x U: [U M U', L]]";
+bh_edges[E][Q] = "(M' U' M U')2";
 bh_edges[E][B] = "[y': [M', U R2 U']]";
 bh_edges[E][M] = "[M: U' M U2 M' U']";
 bh_edges[E][C] = "[M: u M' u2 M' u]";
@@ -623,7 +623,7 @@ bh_edges[V][F] = "[z': [R, U M' U']]";
 bh_edges[V][S] = "[x': [U R' U', M]]";
 bh_edges[V][W] = "[R2 U M': U2 M' U2 M]";
 bh_edges[V][G] = "[y M2: [U' L2 U, M']]";
-bh_edges[V][X] = "[z2: R2 U R U R' U' R' U' R' U R']";
+bh_edges[V][X] = "[L2 R2: U' M' U2 M U']";
 
 bh_edges[W] = {};
 bh_edges[W][A] = "M' u2 M' u2";
@@ -667,7 +667,7 @@ bh_edges[X][F] = "[z' R: [U M' U', R]]";
 bh_edges[X][S] = "[x': [U' L U, M]]";
 bh_edges[X][W] = "[L2 U' M': U2 M' U2 M]";
 bh_edges[X][O] = "[y' M2: [U R2 U', M']]";
-bh_edges[X][V] = "[z2: R U' R U R U R U' R' U' R2]";
+bh_edges[X][V] = "[L2 R2: U M' U2 M U]";
 
 // 3-style corner solutions
 var bh_corners = {};
