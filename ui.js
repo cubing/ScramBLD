@@ -42,6 +42,9 @@ function initUI(){
     initCube();
     initCubeCanvas('cube_canvas');
     renderCube();
+
+    // If a scramble param is found in the URL, it is applied to the cube and solved
+    applyUrlScramble();
 }
 
 // Figures out a solution for the cube and displays it
@@ -67,6 +70,9 @@ function solveAndDisplay(){
     if ( !is_valid_scramble ){
         $('#scramble').val(valid_scramble + " ");
     }
+
+    // URL is updated
+    setScrambleInUrl(valid_scramble);
 
     // Cube is scrambled
     scrambleCube(valid_scramble);
@@ -185,11 +191,43 @@ function solveAndDisplay(){
             }
         }
     }
+
+    // Solution is displayed
     $('#edges').html(edge_pairs);
     $('#corners').html(corner_pairs);
     $('#edges-solution').html(edges_solution);
     $('#corners-solution').html(corners_solution);
 
+    // Alg.cubing.net url is set
     $('#algcubing').attr("href", "https://alg.cubing.net/?alg="+encodeURIComponent(solution.replace(/<br>/g,"\n"))+"&setup="+encodeURIComponent(valid_scramble));
 }
+
+// If a scramble param is found in the URL, it is applied to the cube and solved
+function applyUrlScramble(){
+    var url = window.location.search.substring(1);
+    var url_vars = url.split('&');
+    for (var i = 0; i < url_vars.length; i++) {
+        var param = url_vars[i].split('=');
+        if (param[0] == 'scramble') {
+            var scramble = param[1].replace(/_/g," ").replace(/-/g,"'");
+            $('#scramble').val(scramble);
+            solveAndDisplay();
+        }
+    }
+}
+
+// Adds scramble to url as a param
+// Assumes the scramble is valid
+function setScrambleInUrl( scramble ){
+    // Scramble is converted for url
+    scramble = scramble.replace(/ /g,"_").replace(/\'/g,"-");
+
+    // Added seperately to append ? before params
+    var loc = window.location;
+    var url = loc.protocol + '//' + loc.host + loc.pathname + "?scramble=" + scramble;;
+
+    // URL is updated
+    history.pushState('data', '', url);
+}
+
 $( document ).ready(initUI);
