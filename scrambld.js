@@ -1412,12 +1412,20 @@ function orientCube(){
 
     // Cube is rotated to place the top orientation center in the U face
     switch ( top_position ){
-        case 0: break;
         case 1: permute("z");  rotations.push("z");  break;
         case 2: permute("x");  rotations.push("x");  break;
         case 3: permute("z'"); rotations.push("z'"); break;
         case 4: permute("x'"); rotations.push("x'"); break;
-        case 5: permute("x2"); rotations.push("x2"); break;
+        case 5:
+            if ( centers[2] == I ) {
+                permute("z2");
+                rotations.push("z2");
+            }
+            else {
+                permute("x2");
+                rotations.push("x2");
+            }
+            break;
     }
 
     // Position of the front center is found
