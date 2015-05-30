@@ -1,3 +1,5 @@
+var letter_pairs = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X"];
+
 // Binds events
 function initUI(){
     $('#go').click( solveAndDisplay );
@@ -53,7 +55,7 @@ function solveAndDisplay(){
     var scramble_str = $('#scramble').val();
     var is_valid_scramble = true;
 
-    var valid_permutations = ["U","U'","U2","L","L'","L2","F","F'","F2","R","R'","R2","B","B'","B2","D","D'","D2"];
+    var valid_permutations = ["U","U'","U2","L","L'","L2","F","F'","F2","R","R'","R2","B","B'","B2","D","D'","D2","M","M'","M2","S","S'","S2","E","E'","E2","u","u'","u2","l","l'","l2","f","f'","f2","r","r'","r2","b","b'","b2","d","d'","d2"];
     var scramble = scramble_str.split(" ");
     var permutations = [];
     for (var i=0; i<scramble.length; i++ ){

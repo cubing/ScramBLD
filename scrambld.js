@@ -3,24 +3,26 @@ var cube_canvas; // Canvas object
 var full_cube = new Array(54); // Position of all 54 stickers in the cube
 var corners   = new Array(24); // Position of all 24 corner stickers in the cube
 var edges     = new Array(24); // Position of all 24 edge stickers in the cube
+var centers   = new Array(6);  // Position of all 6 edge stickers in the cube
 
 // Constants
-var F_COLOR = '#00FF00';
+/*var F_COLOR = '#00FF00';
 var U_COLOR = '#FFFFFF';
 var B_COLOR = '#0000FF';
 var R_COLOR = '#FF0000';
 var L_COLOR = '#FF9900';
-var D_COLOR = '#FFFF00';
+var D_COLOR = '#FFFF00';*/
 
-/*var F_COLOR = '#FFFFFF';
+var F_COLOR = '#FFFFFF';
 var U_COLOR = '#00FF00';
 var B_COLOR = '#FFFF00';
 var R_COLOR = '#FF9900';
 var L_COLOR = '#FF0000';
-var D_COLOR = '#0000FF';*/
+var D_COLOR = '#0000FF';
 
 var CORNERS = 0;
 var EDGES   = 1;
+var CENTERS = 2;
 var BH      = 0;
 var M2      = 1;
 var OP      = 2;
@@ -29,10 +31,10 @@ var edge_style   = BH;
 
 // Speffz
 var A=0, B=1, C=2, D=3, E=4, F=5, G=6, H=7, I=8, J=9, K=10, L=11, M=12, N=13, O=14, P=15, Q=16, R=17, S=18, T=19, U=20, V=21, W=22, X=23, Z=-1;
-var letter_pairs = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X"];
 
 var corners_to_full = [0, 6, 8, 2, 9,  15, 17, 11, 18, 24, 26, 20, 27, 33, 35, 29, 36, 42, 44, 38, 45, 51, 53, 47]; // Mapping of corners array to full cube
 var edges_to_full   = [3, 7, 5, 1, 12, 16, 14, 10, 21, 25, 23, 19, 30, 34, 32, 28, 39, 43, 41, 37, 48, 52, 50, 46]; // Mapping of edges array to full cube
+var centers_to_full = [4, 13, 22, 31, 40, 49]; // Mapping of centers array to full cube
 
 // Edge and corner cubies
 // Sticker in position 0,0 of cubie arrays represents the buffer
@@ -48,24 +50,58 @@ var flipped_edges  = [];
 
 // Definitions of available permutations
 var permutations = {
-    "U"  : {0:[B,C,D,A,Q,R,Z,Z,E,F,Z,Z,I,J,Z,Z,M,N,Z,Z,Z,Z,Z,Z], 1:[B,C,D,A,Q,Z,Z,Z,E,Z,Z,Z,I,Z,Z,Z,M,Z,Z,Z,Z,Z,Z,Z]},
-    "U'" : {0:[D,A,B,C,I,J,Z,Z,M,N,Z,Z,Q,R,Z,Z,E,F,Z,Z,Z,Z,Z,Z], 1:[D,A,B,C,I,Z,Z,Z,M,Z,Z,Z,Q,Z,Z,Z,E,Z,Z,Z,Z,Z,Z,Z]},
-    "U2" : {0:[C,D,A,B,M,N,Z,Z,Q,R,Z,Z,E,F,Z,Z,I,J,Z,Z,Z,Z,Z,Z], 1:[C,D,A,B,M,Z,Z,Z,Q,Z,Z,Z,E,Z,Z,Z,I,Z,Z,Z,Z,Z,Z,Z]},
-    "F"  : {0:[Z,Z,P,M,Z,C,D,Z,J,K,L,I,V,Z,Z,U,Z,Z,Z,Z,F,G,Z,Z], 1:[Z,Z,P,Z,Z,C,Z,Z,J,K,L,I,Z,Z,Z,U,Z,Z,Z,Z,F,Z,Z,Z]},
-    "F'" : {0:[Z,Z,F,G,Z,U,V,Z,L,I,J,K,D,Z,Z,C,Z,Z,Z,Z,P,M,Z,Z], 1:[Z,Z,F,Z,Z,U,Z,Z,L,I,J,K,Z,Z,Z,C,Z,Z,Z,Z,P,Z,Z,Z]},
-    "F2" : {0:[Z,Z,U,V,Z,P,M,Z,K,L,I,J,G,Z,Z,F,Z,Z,Z,Z,C,D,Z,Z], 1:[Z,Z,U,Z,Z,P,Z,Z,K,L,I,J,Z,Z,Z,F,Z,Z,Z,Z,C,Z,Z,Z]},
-    "R"  : {0:[Z,T,Q,Z,Z,Z,Z,Z,Z,B,C,Z,N,O,P,M,W,Z,Z,V,Z,J,K,Z], 1:[Z,T,Z,Z,Z,Z,Z,Z,Z,B,Z,Z,N,O,P,M,Z,Z,Z,V,Z,J,Z,Z]},
-    "R'" : {0:[Z,J,K,Z,Z,Z,Z,Z,Z,V,W,Z,P,M,N,O,C,Z,Z,B,Z,T,Q,Z], 1:[Z,J,Z,Z,Z,Z,Z,Z,Z,V,Z,Z,P,M,N,O,Z,Z,Z,B,Z,T,Z,Z]},
-    "R2" : {0:[Z,V,W,Z,Z,Z,Z,Z,Z,T,Q,Z,O,P,M,N,K,Z,Z,J,Z,B,C,Z], 1:[Z,V,Z,Z,Z,Z,Z,Z,Z,T,Z,Z,O,P,M,N,Z,Z,Z,J,Z,B,Z,Z]},
-    "L"  : {0:[I,Z,Z,L,F,G,H,E,U,Z,Z,X,Z,Z,Z,Z,Z,D,A,Z,S,Z,Z,R], 1:[Z,Z,Z,L,F,G,H,E,Z,Z,Z,X,Z,Z,Z,Z,Z,D,Z,Z,Z,Z,Z,R]},
-    "L'" : {0:[S,Z,Z,R,H,E,F,G,A,Z,Z,D,Z,Z,Z,Z,Z,X,U,Z,I,Z,Z,L], 1:[Z,Z,Z,R,H,E,F,G,Z,Z,Z,D,Z,Z,Z,Z,Z,X,Z,Z,Z,Z,Z,L]},
-    "L2" : {0:[U,Z,Z,X,G,H,E,F,S,Z,Z,R,Z,Z,Z,Z,Z,L,I,Z,A,Z,Z,D], 1:[Z,Z,Z,X,G,H,E,F,Z,Z,Z,R,Z,Z,Z,Z,Z,L,Z,Z,Z,Z,Z,D]},
-    "B"  : {0:[H,E,Z,Z,X,Z,Z,W,Z,Z,Z,Z,Z,A,B,Z,R,S,T,Q,Z,Z,N,O], 1:[H,Z,Z,Z,Z,Z,Z,W,Z,Z,Z,Z,Z,A,Z,Z,R,S,T,Q,Z,Z,N,Z]},
-    "B'" : {0:[N,O,Z,Z,B,Z,Z,A,Z,Z,Z,Z,Z,W,X,Z,T,Q,R,S,Z,Z,H,E], 1:[N,Z,Z,Z,Z,Z,Z,A,Z,Z,Z,Z,Z,W,Z,Z,T,Q,R,S,Z,Z,H,Z]},
-    "B2" : {0:[W,X,Z,Z,O,Z,Z,N,Z,Z,Z,Z,Z,H,E,Z,S,T,Q,R,Z,Z,A,B], 1:[W,Z,Z,Z,Z,Z,Z,N,Z,Z,Z,Z,Z,H,Z,Z,S,T,Q,R,Z,Z,A,Z]},
-    "D"  : {0:[Z,Z,Z,Z,Z,Z,K,L,Z,Z,O,P,Z,Z,S,T,Z,Z,G,H,V,W,X,U], 1:[Z,Z,Z,Z,Z,Z,K,Z,Z,Z,O,Z,Z,Z,S,Z,Z,Z,G,Z,V,W,X,U]},
-    "D'" : {0:[Z,Z,Z,Z,Z,Z,S,T,Z,Z,G,H,Z,Z,K,L,Z,Z,O,P,X,U,V,W], 1:[Z,Z,Z,Z,Z,Z,S,Z,Z,Z,G,Z,Z,Z,K,Z,Z,Z,O,Z,X,U,V,W]},
-    "D2" : {0:[Z,Z,Z,Z,Z,Z,O,P,Z,Z,S,T,Z,Z,G,H,Z,Z,K,L,W,X,U,V], 1:[Z,Z,Z,Z,Z,Z,O,Z,Z,Z,S,Z,Z,Z,G,Z,Z,Z,K,Z,W,X,U,V]}
+    // Outer layers
+    "U"  : {0:[B,C,D,A,Q,R,Z,Z,E,F,Z,Z,I,J,Z,Z,M,N,Z,Z,Z,Z,Z,Z], 1:[B,C,D,A,Q,Z,Z,Z,E,Z,Z,Z,I,Z,Z,Z,M,Z,Z,Z,Z,Z,Z,Z], 2:[Z,Z,Z,Z,Z,Z]},
+    "U'" : {0:[D,A,B,C,I,J,Z,Z,M,N,Z,Z,Q,R,Z,Z,E,F,Z,Z,Z,Z,Z,Z], 1:[D,A,B,C,I,Z,Z,Z,M,Z,Z,Z,Q,Z,Z,Z,E,Z,Z,Z,Z,Z,Z,Z], 2:[Z,Z,Z,Z,Z,Z]},
+    "U2" : {0:[C,D,A,B,M,N,Z,Z,Q,R,Z,Z,E,F,Z,Z,I,J,Z,Z,Z,Z,Z,Z], 1:[C,D,A,B,M,Z,Z,Z,Q,Z,Z,Z,E,Z,Z,Z,I,Z,Z,Z,Z,Z,Z,Z], 2:[Z,Z,Z,Z,Z,Z]},
+    "F"  : {0:[Z,Z,P,M,Z,C,D,Z,J,K,L,I,V,Z,Z,U,Z,Z,Z,Z,F,G,Z,Z], 1:[Z,Z,P,Z,Z,C,Z,Z,J,K,L,I,Z,Z,Z,U,Z,Z,Z,Z,F,Z,Z,Z], 2:[Z,Z,Z,Z,Z,Z]},
+    "F'" : {0:[Z,Z,F,G,Z,U,V,Z,L,I,J,K,D,Z,Z,C,Z,Z,Z,Z,P,M,Z,Z], 1:[Z,Z,F,Z,Z,U,Z,Z,L,I,J,K,Z,Z,Z,C,Z,Z,Z,Z,P,Z,Z,Z], 2:[Z,Z,Z,Z,Z,Z]},
+    "F2" : {0:[Z,Z,U,V,Z,P,M,Z,K,L,I,J,G,Z,Z,F,Z,Z,Z,Z,C,D,Z,Z], 1:[Z,Z,U,Z,Z,P,Z,Z,K,L,I,J,Z,Z,Z,F,Z,Z,Z,Z,C,Z,Z,Z], 2:[Z,Z,Z,Z,Z,Z]},
+    "R"  : {0:[Z,T,Q,Z,Z,Z,Z,Z,Z,B,C,Z,N,O,P,M,W,Z,Z,V,Z,J,K,Z], 1:[Z,T,Z,Z,Z,Z,Z,Z,Z,B,Z,Z,N,O,P,M,Z,Z,Z,V,Z,J,Z,Z], 2:[Z,Z,Z,Z,Z,Z]},
+    "R'" : {0:[Z,J,K,Z,Z,Z,Z,Z,Z,V,W,Z,P,M,N,O,C,Z,Z,B,Z,T,Q,Z], 1:[Z,J,Z,Z,Z,Z,Z,Z,Z,V,Z,Z,P,M,N,O,Z,Z,Z,B,Z,T,Z,Z], 2:[Z,Z,Z,Z,Z,Z]},
+    "R2" : {0:[Z,V,W,Z,Z,Z,Z,Z,Z,T,Q,Z,O,P,M,N,K,Z,Z,J,Z,B,C,Z], 1:[Z,V,Z,Z,Z,Z,Z,Z,Z,T,Z,Z,O,P,M,N,Z,Z,Z,J,Z,B,Z,Z], 2:[Z,Z,Z,Z,Z,Z]},
+    "L"  : {0:[I,Z,Z,L,F,G,H,E,U,Z,Z,X,Z,Z,Z,Z,Z,D,A,Z,S,Z,Z,R], 1:[Z,Z,Z,L,F,G,H,E,Z,Z,Z,X,Z,Z,Z,Z,Z,D,Z,Z,Z,Z,Z,R], 2:[Z,Z,Z,Z,Z,Z]},
+    "L'" : {0:[S,Z,Z,R,H,E,F,G,A,Z,Z,D,Z,Z,Z,Z,Z,X,U,Z,I,Z,Z,L], 1:[Z,Z,Z,R,H,E,F,G,Z,Z,Z,D,Z,Z,Z,Z,Z,X,Z,Z,Z,Z,Z,L], 2:[Z,Z,Z,Z,Z,Z]},
+    "L2" : {0:[U,Z,Z,X,G,H,E,F,S,Z,Z,R,Z,Z,Z,Z,Z,L,I,Z,A,Z,Z,D], 1:[Z,Z,Z,X,G,H,E,F,Z,Z,Z,R,Z,Z,Z,Z,Z,L,Z,Z,Z,Z,Z,D], 2:[Z,Z,Z,Z,Z,Z]},
+    "B"  : {0:[H,E,Z,Z,X,Z,Z,W,Z,Z,Z,Z,Z,A,B,Z,R,S,T,Q,Z,Z,N,O], 1:[H,Z,Z,Z,Z,Z,Z,W,Z,Z,Z,Z,Z,A,Z,Z,R,S,T,Q,Z,Z,N,Z], 2:[Z,Z,Z,Z,Z,Z]},
+    "B'" : {0:[N,O,Z,Z,B,Z,Z,A,Z,Z,Z,Z,Z,W,X,Z,T,Q,R,S,Z,Z,H,E], 1:[N,Z,Z,Z,Z,Z,Z,A,Z,Z,Z,Z,Z,W,Z,Z,T,Q,R,S,Z,Z,H,Z], 2:[Z,Z,Z,Z,Z,Z]},
+    "B2" : {0:[W,X,Z,Z,O,Z,Z,N,Z,Z,Z,Z,Z,H,E,Z,S,T,Q,R,Z,Z,A,B], 1:[W,Z,Z,Z,Z,Z,Z,N,Z,Z,Z,Z,Z,H,Z,Z,S,T,Q,R,Z,Z,A,Z], 2:[Z,Z,Z,Z,Z,Z]},
+    "D"  : {0:[Z,Z,Z,Z,Z,Z,K,L,Z,Z,O,P,Z,Z,S,T,Z,Z,G,H,V,W,X,U], 1:[Z,Z,Z,Z,Z,Z,K,Z,Z,Z,O,Z,Z,Z,S,Z,Z,Z,G,Z,V,W,X,U], 2:[Z,Z,Z,Z,Z,Z]},
+    "D'" : {0:[Z,Z,Z,Z,Z,Z,S,T,Z,Z,G,H,Z,Z,K,L,Z,Z,O,P,X,U,V,W], 1:[Z,Z,Z,Z,Z,Z,S,Z,Z,Z,G,Z,Z,Z,K,Z,Z,Z,O,Z,X,U,V,W], 2:[Z,Z,Z,Z,Z,Z]},
+    "D2" : {0:[Z,Z,Z,Z,Z,Z,O,P,Z,Z,S,T,Z,Z,G,H,Z,Z,K,L,W,X,U,V], 1:[Z,Z,Z,Z,Z,Z,O,Z,Z,Z,S,Z,Z,Z,G,Z,Z,Z,K,Z,W,X,U,V], 2:[Z,Z,Z,Z,Z,Z]},
+
+    // Slices
+    "E"  : {0:[Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z], 1:[Z,Z,Z,Z,Z,J,Z,L,Z,N,Z,P,Z,R,Z,T,Z,F,Z,H,Z,Z,Z,Z], 2:[Z,2,3,4,1,Z]},
+    "E'" : {0:[Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z], 1:[Z,Z,Z,Z,Z,R,Z,T,Z,F,Z,H,Z,J,Z,L,Z,N,Z,P,Z,Z,Z,Z], 2:[Z,4,1,2,3,Z]},
+    "E2" : {0:[Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z], 1:[Z,Z,Z,Z,Z,N,Z,P,Z,R,Z,T,Z,F,Z,H,Z,J,Z,L,Z,Z,Z,Z], 2:[Z,3,4,1,2,Z]},
+    "S"  : {0:[Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z], 1:[Z,O,Z,M,B,Z,D,Z,Z,Z,Z,Z,V,Z,X,Z,Z,Z,Z,Z,Z,G,Z,E], 2:[3,0,Z,5,Z,1]},
+    "S'" : {0:[Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z], 1:[Z,E,Z,G,X,Z,V,Z,Z,Z,Z,Z,D,Z,B,Z,Z,Z,Z,Z,Z,M,Z,O], 2:[1,5,Z,0,Z,3]},
+    "S2" : {0:[Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z], 1:[Z,X,Z,V,O,Z,M,Z,Z,Z,Z,Z,G,Z,E,Z,Z,Z,Z,Z,Z,D,Z,B], 2:[5,3,Z,1,Z,0]},
+    "M"  : {0:[Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z], 1:[I,Z,K,Z,Z,Z,Z,Z,U,Z,W,Z,Z,Z,Z,Z,C,Z,A,Z,S,Z,Q,Z], 2:[2,Z,5,Z,0,4]},
+    "M'" : {0:[Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z], 1:[S,Z,Q,Z,Z,Z,Z,Z,A,Z,C,Z,Z,Z,Z,Z,W,Z,U,Z,I,Z,K,Z], 2:[4,Z,0,Z,5,2]},
+    "M2" : {0:[Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z,Z], 1:[U,Z,W,Z,Z,Z,Z,Z,S,Z,Q,Z,Z,Z,Z,Z,K,Z,I,Z,A,Z,C,Z], 2:[5,Z,4,Z,2,0]},
+
+    // Double layer
+    "u"  : {0:[B,C,D,A,Q,R,Z,Z,E,F,Z,Z,I,J,Z,Z,M,N,Z,Z,Z,Z,Z,Z], 1:[B,C,D,A,Q,R,Z,T,E,F,Z,H,I,J,Z,L,M,N,Z,P,Z,Z,Z,Z], 2:[Z,4,1,2,3,Z]},
+    "u'" : {0:[D,A,B,C,I,J,Z,Z,M,N,Z,Z,Q,R,Z,Z,E,F,Z,Z,Z,Z,Z,Z], 1:[D,A,B,C,I,J,Z,L,M,N,Z,P,Q,R,Z,T,E,F,Z,H,Z,Z,Z,Z], 2:[Z,2,3,4,1,Z]},
+    "u2" : {0:[C,D,A,B,M,N,Z,Z,Q,R,Z,Z,E,F,Z,Z,I,J,Z,Z,Z,Z,Z,Z], 1:[C,D,A,B,M,N,Z,P,Q,R,Z,T,E,F,Z,H,I,J,Z,L,Z,Z,Z,Z], 2:[Z,3,4,1,2,Z]},
+    "f"  : {0:[Z,Z,P,M,Z,C,D,Z,J,K,L,I,V,Z,Z,U,Z,Z,Z,Z,F,G,Z,Z], 1:[Z,O,P,M,B,C,D,Z,J,K,L,I,V,Z,X,U,Z,Z,Z,Z,F,G,Z,E], 2:[3,0,Z,5,Z,1]},
+    "f'" : {0:[Z,Z,F,G,Z,U,V,Z,L,I,J,K,D,Z,Z,C,Z,Z,Z,Z,P,M,Z,Z], 1:[Z,E,F,G,X,U,V,Z,L,I,J,K,D,Z,B,C,Z,Z,Z,Z,P,M,Z,O], 2:[1,5,Z,0,Z,3]},
+    "f2" : {0:[Z,Z,U,V,Z,P,M,Z,K,L,I,J,G,Z,Z,F,Z,Z,Z,Z,C,D,Z,Z], 1:[Z,X,U,V,O,P,M,Z,K,L,I,J,G,Z,E,F,Z,Z,Z,Z,C,D,Z,B], 2:[5,3,Z,1,Z,0]},
+    "r"  : {0:[Z,T,Q,Z,Z,Z,Z,Z,Z,B,C,Z,N,O,P,M,W,Z,Z,V,Z,J,K,Z], 1:[S,T,Q,Z,Z,Z,Z,Z,A,B,C,Z,N,O,P,M,W,Z,U,V,I,J,K,Z], 2:[4,Z,0,Z,5,2]},
+    "r'" : {0:[Z,J,K,Z,Z,Z,Z,Z,Z,V,W,Z,P,M,N,O,C,Z,Z,B,Z,T,Q,Z], 1:[I,J,K,Z,Z,Z,Z,Z,U,V,W,Z,P,M,N,O,C,Z,A,B,S,T,Q,Z], 2:[2,Z,5,Z,0,4]},
+    "r2" : {0:[Z,V,W,Z,Z,Z,Z,Z,Z,T,Q,Z,O,P,M,N,K,Z,Z,J,Z,B,C,Z], 1:[U,V,W,Z,Z,Z,Z,Z,S,T,Q,Z,O,P,M,N,K,Z,I,J,A,B,C,Z], 2:[5,Z,4,Z,2,0]},
+    "l"  : {0:[I,Z,Z,L,F,G,H,E,U,Z,Z,X,Z,Z,Z,Z,Z,D,A,Z,S,Z,Z,R], 1:[I,Z,K,L,F,G,H,E,U,Z,W,X,Z,Z,Z,Z,C,D,A,Z,S,Z,Q,R], 2:[2,Z,5,Z,0,4]},
+    "l'" : {0:[S,Z,Z,R,H,E,F,G,A,Z,Z,D,Z,Z,Z,Z,Z,X,U,Z,I,Z,Z,L], 1:[S,Z,Q,R,H,E,F,G,A,Z,C,D,Z,Z,Z,Z,W,X,U,Z,I,Z,K,L], 2:[4,Z,0,Z,5,2]},
+    "l2" : {0:[U,Z,Z,X,G,H,E,F,S,Z,Z,R,Z,Z,Z,Z,Z,L,I,Z,A,Z,Z,D], 1:[U,Z,W,X,G,H,E,F,S,Z,Q,R,Z,Z,Z,Z,K,L,I,Z,A,Z,C,D], 2:[5,Z,4,Z,2,0]},
+    "b"  : {0:[H,E,Z,Z,X,Z,Z,W,Z,Z,Z,Z,Z,A,B,Z,R,S,T,Q,Z,Z,N,O], 1:[H,E,Z,G,X,Z,V,W,Z,Z,Z,Z,D,A,B,Z,R,S,T,Q,Z,M,N,O], 2:[1,5,Z,0,Z,3]},
+    "b'" : {0:[N,O,Z,Z,B,Z,Z,A,Z,Z,Z,Z,Z,W,X,Z,T,Q,R,S,Z,Z,H,E], 1:[N,O,Z,M,B,Z,D,A,Z,Z,Z,Z,V,W,X,Z,T,Q,R,S,Z,G,H,E], 2:[3,0,Z,5,Z,1]},
+    "b2" : {0:[W,X,Z,Z,O,Z,Z,N,Z,Z,Z,Z,Z,H,E,Z,S,T,Q,R,Z,Z,A,B], 1:[W,X,Z,V,O,Z,M,N,Z,Z,Z,Z,G,H,E,Z,S,T,Q,R,Z,D,A,B], 2:[5,3,Z,1,Z,0]},
+    "d"  : {0:[Z,Z,Z,Z,Z,Z,K,L,Z,Z,O,P,Z,Z,S,T,Z,Z,G,H,V,W,X,U], 1:[Z,Z,Z,Z,Z,J,K,L,Z,N,O,P,Z,R,S,T,Z,F,G,H,V,W,X,U], 2:[Z,2,3,4,1,Z]},
+    "d'" : {0:[Z,Z,Z,Z,Z,Z,S,T,Z,Z,G,H,Z,Z,K,L,Z,Z,O,P,X,U,V,W], 1:[Z,Z,Z,Z,Z,R,S,T,Z,F,G,H,Z,J,K,L,Z,N,O,P,X,U,V,W], 2:[Z,4,1,2,3,Z]},
+    "d2" : {0:[Z,Z,Z,Z,Z,Z,O,P,Z,Z,S,T,Z,Z,G,H,Z,Z,K,L,W,X,U,V], 1:[Z,Z,Z,Z,Z,N,O,P,Z,R,S,T,Z,F,G,H,Z,J,K,L,W,X,U,V], 2:[Z,3,4,1,2,Z]},
+
+    // Rotations
 };
 
 // M2 target solutions
@@ -1122,14 +1158,25 @@ function resetCube(){
         corners[i] = i;
         edges[i]   = i;
     }
+
+    // Centers are initialized in the solved position
+    centers[0] = A;
+    centers[1] = E;
+    centers[2] = I;
+    centers[3] = M;
+    centers[4] = Q;
+    centers[5] = U;
 }
 
 // Renders cube in current position
 function renderCube(){
-    // full_cube array is constructed based on corners and edges
+    // full_cube array is constructed based on corners, edges and centers
     for (var i=0; i<24; i++ ){
         full_cube[corners_to_full[i]] = corners[i];
         full_cube[edges_to_full[i]]   = edges[i];
+    }
+    for (var i=0; i<6; i++ ){
+        full_cube[centers_to_full[i]] = centers[i];
     }
 
     // Position in full_cube array
@@ -1269,6 +1316,20 @@ function permute ( permutation ){
             edges[i] = exchanges[i];
         }
     }
+
+    // Centers are permuted
+    exchanges = [Z,Z,Z,Z,Z,Z];
+    perm = permutations[permutation][CENTERS];
+    for (var i=0; i<6; i++){
+        if ( perm[i] != Z ){
+            exchanges[perm[i]] = centers[i];
+        }
+    }
+    for (var i=0; i<6; i++){
+        if ( exchanges[i] != Z ){
+            centers[i] = exchanges[i];
+        }
+    }
 }
 
 // Returns sticker color of the received position
@@ -1300,7 +1361,7 @@ function scrambleCube(scramble_str){
     resetCube();
 
     // unrecognized moves are ignored
-    var valid_permutations = ["U","U'","U2","L","L'","L2","F","F'","F2","R","R'","R2","B","B'","B2","D","D'","D2"];
+    var valid_permutations = ["U","U'","U2","L","L'","L2","F","F'","F2","R","R'","R2","B","B'","B2","D","D'","D2","M","M'","M2","S","S'","S2","E","E'","E2","u","u'","u2","l","l'","l2","f","f'","f2","r","r'","r2","b","b'","b2","d","d'","d2"];
     var scramble = scramble_str.split(" ");
     var permutations = [];
     for (var i=0; i<scramble.length; i++ ){
