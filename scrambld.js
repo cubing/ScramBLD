@@ -6,19 +6,12 @@ var edges     = new Array(24); // Position of all 24 edge stickers in the cube
 var centers   = new Array(6);  // Position of all 6 edge stickers in the cube
 
 // Constants
-/*var F_COLOR = '#00FF00';
+var F_COLOR = '#00FF00';
 var U_COLOR = '#FFFFFF';
 var B_COLOR = '#0000FF';
 var R_COLOR = '#FF0000';
 var L_COLOR = '#FF9900';
-var D_COLOR = '#FFFF00';*/
-
-var F_COLOR = '#FFFFFF';
-var U_COLOR = '#00FF00';
-var B_COLOR = '#FFFF00';
-var R_COLOR = '#FF9900';
-var L_COLOR = '#FF0000';
-var D_COLOR = '#0000FF';
+var D_COLOR = '#FFFF00';
 
 var CORNERS = 0;
 var EDGES   = 1;
@@ -102,6 +95,15 @@ var permutations = {
     "d2" : {0:[Z,Z,Z,Z,Z,Z,O,P,Z,Z,S,T,Z,Z,G,H,Z,Z,K,L,W,X,U,V], 1:[Z,Z,Z,Z,Z,N,O,P,Z,R,S,T,Z,F,G,H,Z,J,K,L,W,X,U,V], 2:[Z,3,4,1,2,Z]},
 
     // Rotations
+    "x"  : {0:[S,T,Q,R,H,E,F,G,A,B,C,D,N,O,P,M,W,X,U,V,I,J,K,L], 1:[S,T,Q,R,H,E,F,G,A,B,C,D,N,O,P,M,W,X,U,V,I,J,K,L], 2:[4,Z,0,Z,5,2]},
+    "x'" : {0:[I,J,K,L,F,G,H,E,U,V,W,X,P,M,N,O,C,D,A,B,S,T,Q,R], 1:[I,J,K,L,F,G,H,E,U,V,W,X,P,M,N,O,C,D,A,B,S,T,Q,R], 2:[2,Z,5,Z,0,4]},
+    "x2" : {0:[U,V,W,X,G,H,E,F,S,T,Q,R,O,P,M,N,K,L,I,J,A,B,C,D], 1:[U,V,W,X,G,H,E,F,S,T,Q,R,O,P,M,N,K,L,I,J,A,B,C,D], 2:[5,Z,4,Z,2,0]},
+    "y"  : {0:[B,C,D,A,Q,R,S,T,E,F,G,H,I,J,K,L,M,N,O,P,X,U,V,W], 1:[B,C,D,A,Q,R,S,T,E,F,G,H,I,J,K,L,M,N,O,P,X,U,V,W], 2:[Z,4,1,2,3,Z]},
+    "y'" : {0:[D,A,B,C,I,J,K,L,M,N,O,P,Q,R,S,T,E,F,G,H,V,W,X,U], 1:[D,A,B,C,I,J,K,L,M,N,O,P,Q,R,S,T,E,F,G,H,V,W,X,U], 2:[Z,2,3,4,1,Z]},
+    "y2" : {0:[C,D,A,B,M,N,O,P,Q,R,S,T,E,F,G,H,I,J,K,L,W,X,U,V], 1:[C,D,A,B,M,N,O,P,Q,R,S,T,E,F,G,H,I,J,K,L,W,X,U,V], 2:[Z,3,4,1,2,Z]},
+    "z"  : {0:[N,O,P,M,B,C,D,A,J,K,L,I,V,W,X,U,T,Q,R,S,F,G,H,E], 1:[N,O,P,M,B,C,D,A,J,K,L,I,V,W,X,U,T,Q,R,S,F,G,H,E], 2:[3,0,Z,5,Z,1]},
+    "z'" : {0:[H,E,F,G,X,U,V,W,L,I,J,K,D,A,B,C,R,S,T,Q,P,M,N,O], 1:[H,E,F,G,X,U,V,W,L,I,J,K,D,A,B,C,R,S,T,Q,P,M,N,O], 2:[1,5,Z,0,Z,3]},
+    "z2" : {0:[W,X,U,V,O,P,M,N,K,L,I,J,G,H,E,F,S,T,Q,R,C,D,A,B], 1:[W,X,U,V,O,P,M,N,K,L,I,J,G,H,E,F,S,T,Q,R,C,D,A,B], 2:[5,3,Z,1,Z,0]}
 };
 
 // M2 target solutions
@@ -1361,7 +1363,7 @@ function scrambleCube(scramble_str){
     resetCube();
 
     // unrecognized moves are ignored
-    var valid_permutations = ["U","U'","U2","L","L'","L2","F","F'","F2","R","R'","R2","B","B'","B2","D","D'","D2","M","M'","M2","S","S'","S2","E","E'","E2","u","u'","u2","l","l'","l2","f","f'","f2","r","r'","r2","b","b'","b2","d","d'","d2"];
+    var valid_permutations = ["U","U'","U2","L","L'","L2","F","F'","F2","R","R'","R2","B","B'","B2","D","D'","D2","M","M'","M2","S","S'","S2","E","E'","E2","u","u'","u2","l","l'","l2","f","f'","f2","r","r'","r2","b","b'","b2","d","d'","d2","x","x'","x2","y","y'","y2","z","z'","z2"];
     var scramble = scramble_str.split(" ");
     var permutations = [];
     for (var i=0; i<scramble.length; i++ ){
