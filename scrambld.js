@@ -40,6 +40,7 @@ var edge_cubies    = [[U,K],[A,Q],[B,M],[C,I],[D,E],[R,H],[T,N],[L,F],[J,P],[V,O
 var solved_edges   = [true, true, true, true, true, true, true, true, true, true, true, true];
 var edge_cycles    = [];
 var flipped_edges  = [];
+var rotations      = [];
 
 // Definitions of available permutations
 var permutations = {
@@ -1391,8 +1392,49 @@ function scrambleCube(scramble_str){
 
 // Finds a BLD solution for the cube in its current state
 function solveCube(){
+    orientCube();
     solveCorners();
     solveEdges();
+}
+
+// Rotates the cube into the solving orientation
+function orientCube(){
+    rotations = [];
+
+    // Position of the top center is found
+    var top_position = 0;
+    for (var i=0; i<6 ; i++){
+        if ( centers[i] == A ){
+            top_position = i;
+            break;
+        }
+    }
+
+    // Cube is rotated to place the top orientation center in the U face
+    switch ( top_position ){
+        case 0: break;
+        case 1: permute("z");  rotations.push("z");  break;
+        case 2: permute("x");  rotations.push("x");  break;
+        case 3: permute("z'"); rotations.push("z'"); break;
+        case 4: permute("x'"); rotations.push("x'"); break;
+        case 5: permute("x2"); rotations.push("x2"); break;
+    }
+
+    // Position of the front center is found
+    var front_position = 0;
+    for (var i=1; i<5 ; i++){
+        if ( centers[i] == I ){
+            front_position = i;
+            break;
+        }
+    }
+
+    // Cube is rotated to place the front orientation center in the F face
+    switch ( front_position ){
+        case 1: permute("y'"); rotations.push("y'"); break;
+        case 3: permute("y");  rotations.push("y");  break;
+        case 4: permute("y2"); rotations.push("y2"); break;
+    }
 }
 
 // Solves all 8 corners in the cube

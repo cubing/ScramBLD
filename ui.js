@@ -90,6 +90,15 @@ function solveAndDisplay(){
     var edges_solution = '';
     var corners_solution = '';
 
+    // Orientation
+    if ( rotations.length != 0 ){
+        solution += "// Orientation <br>";
+        for (var i=0; i<rotations.length; i++){
+            solution += rotations[i] + ' ';
+        }
+        solution += '<br><br>';
+    }
+
     // Edges
     var edge_pairs = '';
     if ( edge_cycles.length != 0 || flipped_edges.length != 0 ) {
