@@ -30,6 +30,22 @@ function initUI(){
         $('#3style-edges').addClass('active-btn').removeClass('inactive-btn');
         solveAndDisplay();
     });
+    $('#orient-y-').click(function(){
+        changeOrientation("y'");
+        solveAndDisplay();
+    });
+    $('#orient-y').click(function(){
+        changeOrientation("y");
+        solveAndDisplay();
+    });
+    $('#orient-x-').click(function(){
+        changeOrientation("x'");
+        solveAndDisplay();
+    });
+    $('#orient-x').click(function(){
+        changeOrientation("x");
+        solveAndDisplay();
+    });
 
     // Initialize scramble generator
     scramblers["333"].initialize(null, Math);
