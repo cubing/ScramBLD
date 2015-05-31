@@ -14,11 +14,14 @@ h3 { margin:0; padding: 20 0 0 20px; color:#1caff6; font-size: 17px;}
 b { font-family: "Courier New", Courier, monospace; color:#000000; width: 20px; }
 input {width:100%; margin-top: 10px; font-size: 16px;}
 .btn { margin: 15px 0 0 30px; padding: 0; width: 140px; font-size: 16px; line-height: 16px; position: relative; display: inline-block; padding: 8px 20px; text-align: center; vertical-align: middle; cursor: pointer; border-radius: 100px; font-weight: 700; -webkit-font-smoothing: antialiased;}
-.small-btn { padding: 0; width: 10px; font-size: 16px; line-height: 10px; position: relative; display: inline-block; padding: 8px; text-align: center; vertical-align: middle; cursor: pointer; border-radius: 100px; font-weight: 700; -webkit-font-smoothing: antialiased;}
+.small-btn { padding: 0; width: 10px; font-size: 16px; line-height: 10px; position: relative; display: inline-block; text-align: center; vertical-align: middle; cursor: pointer; border-radius: 100px; font-weight: 700; -webkit-font-smoothing: antialiased;}
 .active-btn { background: #1caff6; color: #fff; border-color: #1caff6; }
 .inactive-btn { color: #1caff6; }
 .pressable:hover{ background: #22b5fc }
 .pressable:active{ position:relative; top:1px; }
 #orientation-controls {float: right; margin: -110px 60px 0 0;}
 #orient-y {margin-right: 20px;}
-#orient-x, #orient-x- {margin-left: 25px;}
+#orient-x {margin-left: 25px; padding:8px 10px 8px 6px;}
+#orient-x- {margin-left: 25px; padding:10px 10px 6px 6px;}
+#orient-y{padding:8px 12px 8px 4px;}
+#orient-y-{padding:8px 10px 8px 6px;}
