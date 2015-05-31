@@ -6,12 +6,13 @@ var edges     = new Array(24); // Position of all 24 edge stickers in the cube
 var centers   = new Array(6);  // Position of all 6 edge stickers in the cube
 
 // Constants
-var F_COLOR = '#00FF00';
-var U_COLOR = '#FFFFFF';
-var B_COLOR = '#0000FF';
-var R_COLOR = '#FF0000';
-var L_COLOR = '#FF9900';
-var D_COLOR = '#FFFF00';
+var colors = new Array(6);
+colors[0] = '#FFFFFF';
+colors[1] = '#FF9900';
+colors[2] = '#00FF00';
+colors[3] = '#FF0000';
+colors[4] = '#0000FF';
+colors[5] = '#FFFF00';
 
 var CORNERS = 0;
 var EDGES   = 1;
@@ -1132,20 +1133,18 @@ bh_corners[X][W] = "[D2: [L2, U R2 U']]";
 
 // Inits the canvas
 function initCube() {
-    // Full cube is initialized
+    // Full cube is initialized in the solved position
     for (var i=0; i<54; i++ ){
         full_cube[i] = 0;
     }
+    full_cube[4]  = A;
+    full_cube[13] = E;
+    full_cube[22] = I;
+    full_cube[31] = M;
+    full_cube[40] = Q;
+    full_cube[49] = U;
 
-    // Center stickers are initialized in the solved position
-    full_cube[4]  = 0;
-    full_cube[13] = 4;
-    full_cube[22] = 8;
-    full_cube[31] = 12;
-    full_cube[40] = 16;
-    full_cube[49] = 20;
-
-    // Corners and edges are initialized in solved position
+    // Sticker arrays are initialized in solved position
     resetCube();
 }
 
@@ -1337,26 +1336,16 @@ function permute ( permutation ){
 
 // Returns sticker color of the received position
 function getColorFromSpeffz(position){
-    var color = U_COLOR
-    if ( position < 4 ){
-        color = U_COLOR;
+    var color_index = 0;
+    for ( var i=1; i<6; i++ ){
+        if ( position >= i*4 ){
+            color_index = i;
+        }
+        else {
+            break;
+        }
     }
-    else if ( position < 8 ) {
-        color = L_COLOR;
-    }
-    else if ( position < 12 ) {
-        color = F_COLOR;
-    }
-    else if ( position < 16 ) {
-        color = R_COLOR;
-    }
-    else if ( position < 20 ) {
-        color = B_COLOR;
-    }
-    else {
-        color = D_COLOR;
-    }
-    return color;
+    return colors[color_index];
 }
 
 // Sets the cube to solved state and applies scramble
@@ -1395,6 +1384,23 @@ function solveCube(){
     orientCube();
     solveCorners();
     solveEdges();
+}
+
+// Changes the solving orientation of the cube
+function changeOrientation (permutation){
+    // Colors are permuted
+    exchanges = [Z,Z,Z,Z,Z,Z];
+    perm = permutations[permutation][CENTERS];
+    for (var i=0; i<6; i++){
+        if ( perm[i] != Z ){
+            exchanges[perm[i]] = colors[i];
+        }
+    }
+    for (var i=0; i<6; i++){
+        if ( exchanges[i] != Z ){
+            colors[i] = exchanges[i];
+        }
+    }
 }
 
 // Rotates the cube into the solving orientation
