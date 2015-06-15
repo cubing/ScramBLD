@@ -152,7 +152,7 @@ function solveAndDisplay(){
                     edges_solution += "<b>Flip " + letter_pairs[flipped_edges[i]] + " </b>" + edge_flip_alg + "<br>";
                 }
                 else{
-                    solution += "[" + edge_flip_setups[flipped_edges[i]] + ":" + edge_flip_alg + "] // Flip " + letter_pairs[flipped_edges[i]] + "<br>";
+                    solution += "[" + edge_flip_setups[flipped_edges[i]] + ": " + edge_flip_alg + "] // Flip " + letter_pairs[flipped_edges[i]] + "<br>";
                     edges_solution += "<b>Flip " + letter_pairs[flipped_edges[i]] + " </b>[" + edge_flip_setups[flipped_edges[i]] + ": " + edge_flip_alg + "]" + "<br>";
                 }
             }
@@ -173,7 +173,7 @@ function solveAndDisplay(){
             // Display OP solution
             if ( corner_style == OP || (i%2==0 && i==(corner_cycles.length-1)) ) {
                 if ( corner_cycles[i] != 15 ){
-                    solution += "[" + op_setups[corner_cycles[i]] + ":" + y_perm + "]" + " // " + letter_pairs[corner_cycles[i]] + "<br>";
+                    solution += "[" + op_setups[corner_cycles[i]] + ": " + y_perm + "]" + " // " + letter_pairs[corner_cycles[i]] + "<br>";
                     corners_solution += "<b>" + letter_pairs[corner_cycles[i]] + "&nbsp;&nbsp;</b>[" + op_setups[corner_cycles[i]] + ": " + y_perm + "]<br>";
                 }
                 else {
@@ -197,7 +197,7 @@ function solveAndDisplay(){
                     corners_solution += "<b>Flip " + letter_pairs[cw_corners[i]] + " </b>" + cw_corner_flip_alg + "<br>";
                 }
                 else {
-                    solution += "[" + corner_flip_setups[cw_corners[i]] + ":" + cw_corner_flip_alg + "] // Flip " + letter_pairs[cw_corners[i]] + "<br>";
+                    solution += "[" + corner_flip_setups[cw_corners[i]] + ": " + cw_corner_flip_alg + "] // Flip " + letter_pairs[cw_corners[i]] + "<br>";
                     corners_solution +=  "<b>Flip " + letter_pairs[cw_corners[i]] + " </b>[" + corner_flip_setups[cw_corners[i]] + ": " + cw_corner_flip_alg + "]<br>";
                 }
             }
@@ -212,7 +212,7 @@ function solveAndDisplay(){
                     corners_solution += "<b>Flip " + letter_pairs[ccw_corners[i]] + " </b>" + ccw_corner_flip_alg + "<br>";
                 }
                 else {
-                    solution += "[" + corner_flip_setups[ccw_corners[i]] + ":" + ccw_corner_flip_alg + "] // Flip " + letter_pairs[ccw_corners[i]] + "<br>";
+                    solution += "[" + corner_flip_setups[ccw_corners[i]] + ": " + ccw_corner_flip_alg + "] // Flip " + letter_pairs[ccw_corners[i]] + "<br>";
                     corners_solution +=  "<b>Flip " + letter_pairs[ccw_corners[i]] + " </b>[" + corner_flip_setups[ccw_corners[i]] + ": " + ccw_corner_flip_alg + "]<br>";
                 }
             }
