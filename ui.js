@@ -270,7 +270,7 @@ function buildAlgCubingLink( algorithm ){
 function buildAlgCubingUrl( algorithm, setup ){
     var url = "https://alg.cubing.net/?alg="+encodeURIComponent(algorithm.replace(/<br>/g,"\n"));
     if ( typeof(setup) != undefined ){
-		url += '&setup='+encodeURIComponent(setup);
+        url += '&setup='+encodeURIComponent(setup);
     }
     return url;
 }
