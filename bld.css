@@ -20,8 +20,7 @@ input {width:100%; margin-top: 10px; font-size: 16px;}
 .pressable:hover{ background: #22b5fc }
 .pressable:active{ position:relative; top:1px; }
 #orientation-controls {float: right; margin: -110px 60px 0 0;}
-#orient-y {margin-right: 20px;}
-#orient-x {margin-left: 25px; padding:8px 10px 8px 6px;}
+#orient-x {margin-left: 25px; padding:8px 11px 8px 5px;}
 #orient-x- {margin-left: 25px; padding:10px 10px 6px 6px;}
-#orient-y{padding:8px 12px 8px 4px;}
+#orient-y{margin-right: 20px; padding:8px 12px 8px 4px;}
 #orient-y-{padding:8px 10px 8px 6px;}
