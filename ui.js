@@ -129,17 +129,17 @@ function solveAndDisplay(){
             if ( edge_style == M2 ) {
                 if ( i%2==1 && (edge_cycles[i]==I || edge_cycles[i]==S || edge_cycles[i]==C || edge_cycles[i]==W) ){
                     solution += m2_edges[m2_mappings[edge_cycles[i]]] + " // " + letter_pairs[edge_cycles[i]] + "<br>";
-                    edges_solution += "<b>" + letter_pairs[edge_cycles[i]] + " </b>" + m2_edges[m2_mappings[edge_cycles[i]]] + "<br>";
+                    edges_solution += "<b>" + letter_pairs[edge_cycles[i]] + " </b>" + buildAlgCubingLink(m2_edges[m2_mappings[edge_cycles[i]]]) + "<br>";
                 }
                 else {
                     solution += m2_edges[edge_cycles[i]] + " // " + letter_pairs[edge_cycles[i]] + "<br>";
-                    edges_solution += "<b>" + letter_pairs[edge_cycles[i]] + " </b>" + m2_edges[edge_cycles[i]] + "<br>";
+                    edges_solution += "<b>" + letter_pairs[edge_cycles[i]] + " </b>" + buildAlgCubingLink(m2_edges[edge_cycles[i]]) + "<br>";
                 }
             }
             // Display 3-style solution
             else if ( i%2==0 ){
                 solution += bh_edges[edge_cycles[i]][edge_cycles[i+1]] + " // " + letter_pairs[edge_cycles[i]] + letter_pairs[edge_cycles[i+1]] + "<br>";
-                edges_solution += "<b>" + letter_pairs[edge_cycles[i]] + letter_pairs[edge_cycles[i+1]] + " </b>" + bh_edges[edge_cycles[i]][edge_cycles[i+1]] + "<br>";
+                edges_solution += "<b>" + letter_pairs[edge_cycles[i]] + letter_pairs[edge_cycles[i+1]] + " </b>" + buildAlgCubingLink(bh_edges[edge_cycles[i]][edge_cycles[i+1]]) + "<br>";
             }
         }
 
@@ -149,11 +149,12 @@ function solveAndDisplay(){
                 edge_pairs += letter_pairs[flipped_edges[i]] + " ";
                 if ( edge_flip_setups[flipped_edges[i]] == "" ){
                     solution += edge_flip_alg + " // Flip " + letter_pairs[flipped_edges[i]] + "<br>";
-                    edges_solution += "<b>Flip " + letter_pairs[flipped_edges[i]] + " </b>" + edge_flip_alg + "<br>";
+                    edges_solution += "<b>Flip " + letter_pairs[flipped_edges[i]] + " </b>" + buildAlgCubingLink(edge_flip_alg) + "<br>";
                 }
                 else{
                     solution += "[" + edge_flip_setups[flipped_edges[i]] + ":" + edge_flip_alg + "] // Flip " + letter_pairs[flipped_edges[i]] + "<br>";
-                    edges_solution += "<b>Flip " + letter_pairs[flipped_edges[i]] + " </b>[" + edge_flip_setups[flipped_edges[i]] + ": " + edge_flip_alg + "]" + "<br>";
+                    edge_solution = "[" + edge_flip_setups[flipped_edges[i]] + ": " + edge_flip_alg + "]";
+                    edges_solution += "<b>Flip " + letter_pairs[flipped_edges[i]] + " </b>" + buildAlgCubingLink(edge_solution) + "<br>";
                 }
             }
         }
@@ -174,17 +175,18 @@ function solveAndDisplay(){
             if ( corner_style == OP || (i%2==0 && i==(corner_cycles.length-1)) ) {
                 if ( corner_cycles[i] != 15 ){
                     solution += "[" + op_setups[corner_cycles[i]] + ":" + y_perm + "]" + " // " + letter_pairs[corner_cycles[i]] + "<br>";
-                    corners_solution += "<b>" + letter_pairs[corner_cycles[i]] + "&nbsp;&nbsp;</b>[" + op_setups[corner_cycles[i]] + ": " + y_perm + "]<br>";
+                    corner_solution = "[" + op_setups[corner_cycles[i]] + ": " + y_perm + "]";
+                    corners_solution += "<b>" + letter_pairs[corner_cycles[i]] + "&nbsp;&nbsp;</b>" + buildAlgCubingLink(corner_solution) + "<br>";
                 }
                 else {
                     solution += y_perm + " // " + letter_pairs[corner_cycles[i]] +  "<br>";
-                    corners_solution += "<b>" + letter_pairs[corner_cycles[i]] + "&nbsp;&nbsp;</b>" + y_perm +  "<br>";
+                    corners_solution += "<b>" + letter_pairs[corner_cycles[i]] + "&nbsp;&nbsp;</b>" + buildAlgCubingLink(y_perm) +  "<br>";
                 }
             }
             // Display 3-style solution
             else if ( i%2==0 ){
                 solution += bh_corners[corner_cycles[i]][corner_cycles[i+1]] + " // " + letter_pairs[corner_cycles[i]] + letter_pairs[corner_cycles[i+1]] + "<br>";
-                corners_solution += "<b>" + letter_pairs[corner_cycles[i]] + letter_pairs[corner_cycles[i+1]] + " </b>" + bh_corners[corner_cycles[i]][corner_cycles[i+1]] + "<br>";
+                corners_solution += "<b>" + letter_pairs[corner_cycles[i]] + letter_pairs[corner_cycles[i+1]] + " </b>" + buildAlgCubingLink(bh_corners[corner_cycles[i]][corner_cycles[i+1]]) + "<br>";
             }
         }
         if (cw_corners.length != 0){
@@ -194,11 +196,12 @@ function solveAndDisplay(){
 
                 if ( corner_flip_setups[cw_corners[i]] == "" ){
                     solution += cw_corner_flip_alg + " // Flip " + letter_pairs[cw_corners[i]] + "<br>";
-                    corners_solution += "<b>Flip " + letter_pairs[cw_corners[i]] + " </b>" + cw_corner_flip_alg + "<br>";
+                    corners_solution += "<b>Flip " + letter_pairs[cw_corners[i]] + " </b>" + buildAlgCubingLink(cw_corner_flip_alg) + "<br>";
                 }
                 else {
                     solution += "[" + corner_flip_setups[cw_corners[i]] + ":" + cw_corner_flip_alg + "] // Flip " + letter_pairs[cw_corners[i]] + "<br>";
-                    corners_solution +=  "<b>Flip " + letter_pairs[cw_corners[i]] + " </b>[" + corner_flip_setups[cw_corners[i]] + ": " + cw_corner_flip_alg + "]<br>";
+                    corner_solution = "[" + corner_flip_setups[cw_corners[i]] + ": " + cw_corner_flip_alg + "]";
+                    corners_solution +=  "<b>Flip " + letter_pairs[cw_corners[i]] + " </b>" + buildAlgCubingLink(corner_solution) + "<br>";
                 }
             }
         }
@@ -209,11 +212,12 @@ function solveAndDisplay(){
 
                 if ( corner_flip_setups[ccw_corners[i]] == "" ){
                     solution += ccw_corner_flip_alg + " // Flip " + letter_pairs[ccw_corners[i]] + "<br>";
-                    corners_solution += "<b>Flip " + letter_pairs[ccw_corners[i]] + " </b>" + ccw_corner_flip_alg + "<br>";
+                    corners_solution += "<b>Flip " + letter_pairs[ccw_corners[i]] + " </b>" + buildAlgCubingLink(ccw_corner_flip_alg) + "<br>";
                 }
                 else {
                     solution += "[" + corner_flip_setups[ccw_corners[i]] + ":" + ccw_corner_flip_alg + "] // Flip " + letter_pairs[ccw_corners[i]] + "<br>";
-                    corners_solution +=  "<b>Flip " + letter_pairs[ccw_corners[i]] + " </b>[" + corner_flip_setups[ccw_corners[i]] + ": " + ccw_corner_flip_alg + "]<br>";
+                    corner_solution = "[" + corner_flip_setups[ccw_corners[i]] + ": " + ccw_corner_flip_alg + "]";
+                    corners_solution +=  "<b>Flip " + letter_pairs[ccw_corners[i]] + " </b>"+ buildAlgCubingLink(corner_solution) +"<br>";
                 }
             }
         }
@@ -226,7 +230,7 @@ function solveAndDisplay(){
     $('#corners-solution').html(corners_solution);
 
     // Alg.cubing.net url is set
-    $('#algcubing').attr("href", "https://alg.cubing.net/?alg="+encodeURIComponent(solution.replace(/<br>/g,"\n"))+"&setup="+encodeURIComponent(valid_scramble));
+    $('#algcubing').attr("href", buildAlgCubingUrl(solution, valid_scramble));
 }
 
 // If a scramble param is found in the URL, it is applied to the cube and solved
@@ -251,10 +255,24 @@ function setScrambleInUrl( scramble ){
 
     // Added seperately to append ? before params
     var loc = window.location;
-    var url = loc.protocol + '//' + loc.host + loc.pathname + "?scramble=" + scramble;;
+    var url = loc.protocol + '//' + loc.host + loc.pathname + "?scramble=" + scramble;
 
     // URL is updated
     history.pushState('data', '', url);
+}
+
+// Generates a full link to alg.cubing.net for the algorithm
+function buildAlgCubingLink( algorithm ){
+    return $('<div />').append($('<a>').attr("href",buildAlgCubingUrl(algorithm)).attr("target","_blank").text(algorithm)).html();
+}
+
+// Generates an alg.cubing.net url for the algorithm with 
+function buildAlgCubingUrl( algorithm, setup ){
+    var url = "https://alg.cubing.net/?alg="+encodeURIComponent(algorithm.replace(/<br>/g,"\n"));
+    if ( typeof(setup) != 'undefined' ){
+        url += '&setup='+encodeURIComponent(setup);
+    }
+    return url;
 }
 
 $( document ).ready(initUI);

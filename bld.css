@@ -24,3 +24,5 @@ input {width:100%; margin-top: 10px; font-size: 16px;}
 #orient-x- {margin-left: 25px; padding:10px 10px 6px 6px;}
 #orient-y{margin-right: 20px; padding:8px 12px 8px 4px;}
 #orient-y-{padding:8px 10px 8px 6px;}
+#edges-solution a, #corners-solution a{color : #1caff6;}
+#edges-solution a:hover, #corners-solution a:hover{color: #006FA5;}
