@@ -253,7 +253,7 @@ function setScrambleInUrl( scramble ){
     // Scramble is converted for url
     scramble = scramble.replace(/ /g,"_").replace(/\'/g,"-");
 
-    // Added seperataely to append ? before params
+    // Added seperately to append ? before params
     var loc = window.location;
     var url = loc.protocol + '//' + loc.host + loc.pathname + "?scramble=" + scramble;
 
