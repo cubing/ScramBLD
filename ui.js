@@ -68,10 +68,10 @@ function initUI(){
 // Figures out a solution for the cube and displays it
 function solveAndDisplay(){
     // Scramble the cube
-	var edge_pairs_ul = $('<ul />');
-	var corner_pairs_ul = $('<ul />');
-	var edges_solution_ul = $('<ul />');
-	var corners_solution_ul = $('<ul />');
+    var edge_pairs_ul = $('<ul />');
+    var corner_pairs_ul = $('<ul />');
+    var edges_solution_ul = $('<ul />');
+    var corners_solution_ul = $('<ul />');
     var scramble_str = $('#scramble').val();
     var is_valid_scramble = true;
 
@@ -139,17 +139,17 @@ function solveAndDisplay(){
                     solution += m2_edges[edge_cycles[i]] + " // " + letter_pairs[edge_cycles[i]] + "<br>";
                     edges_solution = "<b>" + letter_pairs[edge_cycles[i]] + " </b>" + buildAlgCubingLink(m2_edges[edge_cycles[i]]);
                 }
-				edges_solution_ul.appendList(edges_solution);
+                edges_solution_ul.appendList(edges_solution);
             }
             // Display 3-style solution
             else if ( i%2==0 ){
                 solution += bh_edges[edge_cycles[i]][edge_cycles[i+1]] + " // " + letter_pairs[edge_cycles[i]] + letter_pairs[edge_cycles[i+1]] + "<br>";
                 edges_solution = "<b>" + letter_pairs[edge_cycles[i]] + letter_pairs[edge_cycles[i+1]] + " </b>" + buildAlgCubingLink(bh_edges[edge_cycles[i]][edge_cycles[i+1]]);
-				edges_solution_ul.appendList(edges_solution);
-			}
+                edges_solution_ul.appendList(edges_solution);
+            }
         }
-		
-		edge_pairs_ul.appendList(edge_pairs);
+        
+        edge_pairs_ul.appendList(edge_pairs);
 
         if (flipped_edges.length != 0){
             edge_pairs = "Flip: ";
@@ -164,13 +164,13 @@ function solveAndDisplay(){
                     edge_solution = "[" + edge_flip_setups[flipped_edges[i]] + ": " + edge_flip_alg + "]";
                     edges_solution = "<b>Flip " + letter_pairs[flipped_edges[i]] + " </b>" + buildAlgCubingLink(edge_solution);
                 }
-				edges_solution_ul.appendList(edges_solution);
+                edges_solution_ul.appendList(edges_solution);
             }
-			edge_pairs_ul.appendList(edge_pairs);
+            edge_pairs_ul.appendList(edge_pairs);
         }
-		
+        
 
-		
+        
         solution += "<br>";
     }
 
@@ -195,16 +195,16 @@ function solveAndDisplay(){
                     solution += y_perm + " // " + letter_pairs[corner_cycles[i]] +  "<br>";
                     corners_solution = "<b>" + letter_pairs[corner_cycles[i]] + "&nbsp;&nbsp;</b>" + buildAlgCubingLink(y_perm);
                 }
-				corners_solution_ul.appendList(corners_solution);
+                corners_solution_ul.appendList(corners_solution);
             }
             // Display 3-style solution
             else if ( i%2==0 ){
                 solution += bh_corners[corner_cycles[i]][corner_cycles[i+1]] + " // " + letter_pairs[corner_cycles[i]] + letter_pairs[corner_cycles[i+1]] + "<br>";
                 corners_solution = "<b>" + letter_pairs[corner_cycles[i]] + letter_pairs[corner_cycles[i+1]] + " </b>" + buildAlgCubingLink(bh_corners[corner_cycles[i]][corner_cycles[i+1]]);
-				corners_solution_ul.appendList(corners_solution);
-			}
+                corners_solution_ul.appendList(corners_solution);
+            }
         }
-		corner_pairs_ul.appendList(corner_pairs);
+        corner_pairs_ul.appendList(corner_pairs);
         if (cw_corners.length != 0){
             corner_pairs = "Twist Clockwise: ";
             for (var i=0; i<cw_corners.length; i++){
@@ -219,9 +219,9 @@ function solveAndDisplay(){
                     corner_solution = "[" + corner_flip_setups[cw_corners[i]] + ": " + cw_corner_flip_alg + "]";
                     corners_solution =  "<b>Flip " + letter_pairs[cw_corners[i]] + " </b>" + buildAlgCubingLink(corner_solution);
                 }
-				corners_solution_ul.appendList(corners_solution);
+                corners_solution_ul.appendList(corners_solution);
             }
-			corner_pairs_ul.appendList(corner_pairs);
+            corner_pairs_ul.appendList(corner_pairs);
         }
         if (ccw_corners.length != 0){
             corner_pairs = "Twist Counterclockwise: ";
@@ -238,7 +238,7 @@ function solveAndDisplay(){
                     corners_solution +=  "<b>Flip " + letter_pairs[ccw_corners[i]] + " </b>"+ buildAlgCubingLink(corner_solution) +"<br>";
                 }
             }
-			corner_pairs_ul.appendList(corner_pairs);
+            corner_pairs_ul.appendList(corner_pairs);
         }
     }
 
@@ -296,11 +296,11 @@ function buildAlgCubingUrl( algorithm, setup ){
 
 
 jQuery.fn.getOuterHtml = function() {
-	return $('<div />').append(this).html();
+    return $('<div />').append(this).html();
 };
 
 jQuery.fn.appendList = function(text) {
-	this.append($('<li>').html(text));
+    this.append($('<li>').html(text));
 };
 
 $( document ).ready(initUI);
