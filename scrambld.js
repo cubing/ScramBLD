@@ -1049,7 +1049,7 @@ bh_corners[T][Q] = "[x R: [R U R', D2]]";
 bh_corners[T][S] = "[L, U R' U']";
 bh_corners[T][U] = "[y' R': [D', R' U2 R]]";
 bh_corners[T][V] = "[z': [U, R' D2 R]]";
-bh_corners[T][X] = "[y' D R': [D2, R' U2 R]]";
+bh_corners[T][X] = "[D2 R': [D2, R' U R]]";
 
 bh_corners[U] = {};
 bh_corners[U][B] = "[z': [D2, R U2 R']]";
@@ -1126,7 +1126,7 @@ bh_corners[X][N] = "[x' y' R: [R D R', U2]]";
 bh_corners[X][O] = "[R D: [U R' U', L2]]";
 bh_corners[X][P] = "[D: [U R' U', L2]]";
 bh_corners[X][Q] = "[U2 R: [U2, R D' R']]";
-bh_corners[X][T] = "[y' D R': [R' U2 R, D2]]";
+bh_corners[X][T] = "[D2 R': [R' U R, D2]]";
 bh_corners[X][U] = "[D: [U R2 U', L2]]";
 bh_corners[X][V] = "[U2: [D2, R2 U R2 U' R2]]";
 bh_corners[X][W] = "[D2: [L2, U R2 U']]";
