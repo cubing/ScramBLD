@@ -30,6 +30,20 @@ function initUI(){
         $('#3style-edges').addClass('active-btn').removeClass('inactive-btn');
         solveAndDisplay();
     });
+    $('#hide-solution').click(function(){
+	$('#solution').hide();
+	$('#solution-pairs').hide();
+	$('#hide-solution').addClass('inactive-btn').removeClass('active-btn');
+	$('#show-solution').addClass('active-btn').removeClass('inactive-btn');
+        solveAndDisplay();
+    });
+    $('#show-solution').click(function(){
+	$('#solution').show();
+	$('#solution-pairs').show();
+	$('#show-solution').addClass('inactive-btn').removeClass('active-btn');
+	$('#hide-solution').addClass('active-btn').removeClass('inactive-btn');
+        solveAndDisplay();
+    });
     $('#orient-y-').click(function(){
         changeOrientation("y'");
         solveAndDisplay();
